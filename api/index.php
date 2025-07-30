@@ -1,55 +1,28 @@
 <?php
 
-// prepara response
-$data['status'] = 'ERROR';
-$data['data'] = null;
+require_once('output.php');
 
-// request
-if (isset($_GET['option'])) { // verifica se o front mandou o parâmetro option na URL
+// prepare response
+$data['status'] = 'ERROR';
+$data['data'] = [];
+
+// API ROUTES
+if (isset($_GET['option'])) {
 
     switch ($_GET['option']) {
         case 'status':
-            define_response($data, 'API ONLINE!');
+            api_status($data);
             break;
 
         case 'random':
-            $min = 0;
-            $max = 1000;
+            api_random($data);
+            break;
 
-            /*
-            verifica se vem min e / ou max no GET
-            */
-            if (isset($_GET['min'])) {
-                $min = intval($_GET['min']);
-            }
-
-            if (isset($_GET['min'])) {
-                $max = intval($_GET['max']);
-            }
-
-            if ($min >= $max) {
-                response($data);
-                return;
-            }
-
-            define_response($data, rand($min, $max));
+        case 'hash':
+            api_hash($data);
             break;
     }
 }
 
-// 2. RESPONSE (emitir a resposta com os dados da API)
+// API response
 response($data);
-// =========================================================================
-function define_response(&$data, $value)
-{
-    $data['status'] = 'SUCCESS';
-    $data['data'] = $value;
-}
-
-// =========================================================================
-// 3. RESPONSE (mensagem de resposta da solicitação pro front)
-function response($data_response)
-{
-    header("Content-Type:application/json"); // define que vai enviar json
-    echo json_encode($data_response); // converte de array pra json
-}
