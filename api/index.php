@@ -13,7 +13,26 @@ if (isset($_GET['option'])) { // verifica se o front mandou o parâmetro option 
             break;
 
         case 'random':
-            define_response($data, rand(0, 1000));
+            $min = 0;
+            $max = 1000;
+
+            /*
+            verifica se vem min e / ou max no GET
+            */
+            if (isset($_GET['min'])) {
+                $min = intval($_GET['min']);
+            }
+
+            if (isset($_GET['min'])) {
+                $max = intval($_GET['max']);
+            }
+
+            if ($min >= $max) {
+                response($data);
+                return;
+            }
+
+            define_response($data, rand($min, $max));
             break;
     }
 }
