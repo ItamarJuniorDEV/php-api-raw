@@ -1,27 +1,31 @@
 <?php
 
-$data = []; // cria um array vazio para preenchermos
+// prepara response
+$data['status'] = 'ERROR';
+$data['data'] = null;
 
-// 1. REQUEST (pede os dados pro front)
+// request
 if (isset($_GET['option'])) { // verifica se o front mandou o parâmetro option na URL
 
-    switch ($_GET['option']) { // decide o que fazer dependendo do valor do option
-        case 'status': // se option for status...
-            $data['status'] = 'SUCCESS'; // retorna sucesso
-            $data['data'] = 'API ONLINE'; // retorna que está online
+    switch ($_GET['option']) {
+        case 'status':
+            define_response($data, 'API ONLINE!');
             break;
 
-        default:
-            $data['status'] = 'ERROR'; // se não tiver option, retorna erro
+        case 'random':
+            define_response($data, rand(0, 1000));
             break;
     }
-
-} else {
-    $data['status'] = 'ERROR'; // se não tiver option, retorna erro
 }
 
 // 2. RESPONSE (emitir a resposta com os dados da API)
 response($data);
+// =========================================================================
+function define_response(&$data, $value)
+{
+    $data['status'] = 'SUCCESS';
+    $data['data'] = $value;
+}
 
 // =========================================================================
 // 3. RESPONSE (mensagem de resposta da solicitação pro front)
