@@ -23,6 +23,7 @@ if (isset($_GET['option'])) { // verifica se o front mandou o parâmetro option 
 // 2. RESPONSE (emitir a resposta com os dados da API)
 response($data);
 
+// =========================================================================
 // 3. RESPONSE (mensagem de resposta da solicitação pro front)
 function response($data_response)
 {
